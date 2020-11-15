@@ -12,33 +12,27 @@ import th.ac.kmitl.atm.service.CustomerService;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+
     private CustomerService customerService;
 
     public LoginController(CustomerService customerService) {
         this.customerService = customerService;
     }
-
     @GetMapping
     public String getLoginPage(){
         return "login";
     }
 
     @PostMapping
-    public String login(@ModelAttribute Customer customer,
-                        Model model) {
-        // 1. check to see if id and pin matched customer info
-        Customer matchingCustomer = customerService.checkPin(customer);
+    public String login(@ModelAttribute Customer customer, Model model) {
 
-        // 2. if match,welcome customer
+        Customer matchingCustomer = customerService.checkPin(customer);
         if (matchingCustomer != null) {
             model.addAttribute("greeting",
-                    "Welcome, " + matchingCustomer.getName());
-        } else {
-
-            // 3. ot match,display that customer info is incorrect
+                    "Welcome, "+ matchingCustomer.getName());
+        } else  {
             model.addAttribute("greeting",
                     "Can't find customer");
-
         }
         return "home";
     }
